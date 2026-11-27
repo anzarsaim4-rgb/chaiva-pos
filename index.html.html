@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CHAIVA - Food Point | Enterprise Neumorphic POS & Analytics</title>
+    <title>CHAIVA - Food Point | Soft Pink Neumorphic POS & Analytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neu-bg: #E6EBF2;
-            --neu-surface: #ECF0F6;
+            --neu-bg: #F3ECF0;
+            --neu-surface: #F7F1F5;
             --neu-light: #FFFFFF;
-            --neu-dark: #C5CEDB;
-            --brand-green: #06402B;
-            --brand-green-dark: #042b1d;
-            --brand-gold: #FACC15;
+            --neu-dark: #D5C6CF;
+            --brand-pink: #BE185D;
+            --brand-pink-dark: #9D174D;
+            --brand-pink-soft: #F472B6;
+            --brand-gold: #FDE047;
         }
 
         body {
@@ -31,35 +32,36 @@
         }
 
         /* =========================================================
-           SOFT NEUMORPHISM DESIGN SYSTEM
+           SOFT PINK & WHITE NEUMORPHISM DESIGN SYSTEM
            ========================================================= */
         .neu-card {
             background: var(--neu-surface);
             box-shadow: 7px 7px 15px var(--neu-dark), -7px -7px 15px var(--neu-light);
-            border: 1px solid rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(244, 114, 182, 0.25);
         }
 
         .neu-card-sm {
             background: var(--neu-surface);
             box-shadow: 4px 4px 9px var(--neu-dark), -4px -4px 9px var(--neu-light);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(244, 114, 182, 0.22);
         }
 
         .neu-inset {
-            background: #E1E7F0;
+            background: #EDE3E9;
             box-shadow: inset 4px 4px 8px var(--neu-dark), inset -4px -4px 8px var(--neu-light);
-            border: 1px solid rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.45);
         }
 
         .neu-btn {
             background: var(--neu-surface);
             box-shadow: 4px 4px 8px var(--neu-dark), -4px -4px 8px var(--neu-light);
-            border: 1px solid rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(244, 114, 182, 0.28);
             transition: all 0.12s ease;
         }
 
         .neu-btn:hover {
             transform: translateY(-1px);
+            border-color: rgba(219, 39, 119, 0.45);
         }
 
         .neu-btn:active {
@@ -67,22 +69,23 @@
             transform: scale(0.97);
         }
 
-        .neu-btn-green {
-            background: linear-gradient(145deg, #074b32, #053523);
-            box-shadow: 4px 4px 9px #b8c2d1, -3px -3px 8px #ffffff;
+        .neu-btn-pink {
+            background: linear-gradient(145deg, #DB2777, #9D174D);
+            box-shadow: 4px 4px 9px #cbb8c3, -3px -3px 8px #ffffff;
             color: #FFFFFF;
+            border: 1px solid rgba(251, 207, 232, 0.35);
             transition: all 0.12s ease;
         }
 
-        .neu-btn-green:active {
-            box-shadow: inset 3px 3px 7px #021a11, inset -2px -2px 5px #0b6343;
+        .neu-btn-pink:active {
+            box-shadow: inset 3px 3px 7px #701037, inset -2px -2px 5px #f43f5e;
             transform: scale(0.97);
         }
 
         .neu-btn-gold {
             background: linear-gradient(145deg, #fde047, #eab308);
-            box-shadow: 4px 4px 9px #b8c2d1, -3px -3px 8px #ffffff;
-            color: #06402B;
+            box-shadow: 4px 4px 9px #cbb8c3, -3px -3px 8px #ffffff;
+            color: #831843;
             transition: all 0.12s ease;
         }
 
@@ -127,102 +130,147 @@
 <body class="min-h-screen pb-24 lg:pb-8">
 
     <!-- =====================================================================
-         1. TOP BRAND HEADER & STAFF / DB STATUS BAR
+         0. PASSWORD LOCK SCREEN OVERLAY (BLOCKS ACCESS UNTIL UNLOCKED)
          ===================================================================== -->
-    <header class="bg-[#06402B] text-white sticky top-0 z-30 shadow-lg border-b border-emerald-900">
+    <div id="posLockScreen" class="fixed inset-0 z-[100] bg-[#F3ECF0] flex items-center justify-center p-4">
+        <div class="neu-card rounded-3xl max-w-sm w-full p-6 sm:p-7 space-y-5 text-center animate-pop">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-[#DB2777] to-[#9D174D] text-white flex items-center justify-center text-3xl shadow-lg border border-pink-200">
+                🔒
+            </div>
+            <div>
+                <h2 class="text-xl font-black tracking-wider text-[#9D174D]">CHAIVA POS LOCKED</h2>
+                <p class="text-xs font-semibold text-slate-500 mt-1">
+                    Sales &amp; Payment History surakshit rakhne ke liye Password darj karein
+                </p>
+            </div>
+
+            <form onsubmit="handleUnlockSubmit(event)" class="space-y-3 text-left">
+                <div>
+                    <label class="text-[10px] font-extrabold uppercase text-pink-900 block mb-1">POS Access Password</label>
+                    <input type="password" id="unlockPasswordInput" autocomplete="current-password" placeholder="Enter POS Password..."
+                        class="neu-inset w-full px-4 py-3 rounded-2xl text-sm font-black text-slate-900 tracking-widest focus:outline-none">
+                </div>
+                <p id="unlockErrorMsg" class="hidden text-xs font-extrabold text-rose-600 text-center">
+                    ❌ Galat Password! Dobara koshish karein.
+                </p>
+                <button type="submit" class="neu-btn-pink w-full py-3 rounded-2xl text-sm font-black tracking-wide">
+                    🔓 Unlock CHAIVA POS
+                </button>
+            </form>
+
+            <p class="text-[10px] font-semibold text-slate-400">
+                Default Password: <span class="font-mono-receipt font-bold text-pink-800">chaiva123</span> (Unlock ke baad badal sakte hain)
+            </p>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         1. TOP BRAND HEADER (SOFT PINK THEME + LOCK & STAFF CONTROLS)
+         ===================================================================== -->
+    <header class="bg-gradient-to-r from-[#9D174D] via-[#BE185D] to-[#9D174D] text-white sticky top-0 z-30 shadow-lg border-b border-pink-300/40">
         <div class="max-w-[1460px] mx-auto px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-2">
             <!-- Brand Identity -->
             <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-2xl bg-[#FACC15]/15 border border-[#FACC15]/40 flex items-center justify-center text-xl shrink-0">
+                <div class="w-10 h-10 rounded-2xl bg-white/15 border border-pink-200/50 flex items-center justify-center text-xl shrink-0">
                     ☕
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="text-xl sm:text-2xl font-black tracking-wider text-[#FACC15] leading-none">
+                        <h1 class="text-xl sm:text-2xl font-black tracking-wider text-[#FDE047] leading-none">
                             CHAIVA
                         </h1>
-                        <span class="px-2 py-0.5 rounded-md bg-emerald-900/90 border border-emerald-700 text-[10px] font-extrabold tracking-widest text-emerald-100 uppercase">
+                        <span class="px-2 py-0.5 rounded-md bg-pink-950/60 border border-pink-300/40 text-[10px] font-extrabold tracking-widest text-pink-100 uppercase">
                             FOOD POINT
                         </span>
-                        <span id="dbSyncBadge" class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-[10px] font-bold text-emerald-200">
-                            ● DB Synced
+                        <span id="dbSyncBadge" class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/15 border border-pink-200/40 text-[10px] font-bold text-pink-100">
+                            ● DB Verified
                         </span>
                     </div>
-                    <p class="text-[11px] font-semibold tracking-wider text-amber-200/90 mt-0.5">
-                        Har Sip Me Apnapan • Enterprise POS & Audit System
+                    <p class="text-[11px] font-semibold tracking-wider text-pink-100/90 mt-0.5">
+                        Har Sip Me Apnapan • Protected POS &amp; Audit System
                     </p>
                 </div>
             </div>
 
-            <!-- Live KPIs + Staff Switcher + Backup -->
-            <div class="flex items-center gap-1.5 sm:gap-2.5 overflow-x-auto no-scrollbar">
+            <!-- Live KPIs + Staff Switcher + Lock + Backup -->
+            <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar">
                 <!-- Staff Active Pill -->
-                <button onclick="openStaffModal()" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl px-2.5 py-1.5 text-left shrink-0 transition">
+                <button onclick="openStaffModal()" class="flex items-center gap-1.5 bg-white/15 hover:bg-white/25 border border-pink-200/30 rounded-xl px-2.5 py-1.5 text-left shrink-0 transition">
                     <span class="text-sm">👤</span>
                     <div>
-                        <span class="text-[9px] uppercase font-bold text-amber-200 block leading-none">Active Staff</span>
+                        <span class="text-[9px] uppercase font-bold text-pink-200 block leading-none">Active Staff</span>
                         <span id="hdrActiveStaffName" class="text-xs font-extrabold text-white leading-tight">Admin (Owner)</span>
                     </div>
                 </button>
 
-                <div class="bg-white/10 border border-white/15 rounded-xl px-2.5 py-1 text-center shrink-0">
-                    <span class="text-[9px] uppercase font-bold text-emerald-200 block">Valid Bills</span>
+                <div class="bg-white/15 border border-pink-200/25 rounded-xl px-2.5 py-1 text-center shrink-0">
+                    <span class="text-[9px] uppercase font-bold text-pink-100 block">Valid Bills</span>
                     <span id="hdrBillsCount" class="text-sm sm:text-base font-black text-white leading-tight">0</span>
                 </div>
-                <div class="bg-white/10 border border-white/15 rounded-xl px-2.5 py-1 text-center shrink-0">
+                <div class="bg-white/15 border border-pink-200/25 rounded-xl px-2.5 py-1 text-center shrink-0">
                     <span class="text-[9px] uppercase font-bold text-amber-200 block">Net Sales</span>
-                    <span id="hdrRevenueTotal" class="text-sm sm:text-base font-black text-[#FACC15] leading-tight">₹0</span>
+                    <span id="hdrRevenueTotal" class="text-sm sm:text-base font-black text-[#FDE047] leading-tight">₹0</span>
                 </div>
-                <div class="bg-white/10 border border-white/15 rounded-xl px-2.5 py-1 text-center shrink-0">
-                    <span class="text-[9px] uppercase font-bold text-orange-200 block">Lollypops</span>
-                    <span id="hdrLollipopCount" class="text-sm sm:text-base font-black text-orange-300 leading-tight">0 Pcs</span>
+                <div class="bg-white/15 border border-pink-200/25 rounded-xl px-2.5 py-1 text-center shrink-0">
+                    <span class="text-[9px] uppercase font-bold text-pink-100 block">Lollypops</span>
+                    <span id="hdrLollipopCount" class="text-sm sm:text-base font-black text-white leading-tight">0 Pcs</span>
                 </div>
 
-                <button onclick="openBackupModal()" title="Database Backup & Restore" class="hidden sm:flex items-center gap-1 bg-[#FACC15] hover:bg-amber-300 text-[#06402B] font-extrabold text-xs px-3 py-2 rounded-xl shadow-xs shrink-0 transition">
+                <button onclick="openPasswordSettingsModal()" title="Change POS Password" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 border border-pink-200/30 text-white font-extrabold text-xs px-2.5 py-2 rounded-xl shrink-0 transition">
+                    <span>🔑</span>
+                    <span class="hidden md:inline">Password</span>
+                </button>
+
+                <button onclick="lockPosScreen()" title="Lock POS Screen Immediately" class="flex items-center gap-1 bg-rose-950/70 hover:bg-rose-950 border border-pink-300/40 text-[#FDE047] font-extrabold text-xs px-2.5 py-2 rounded-xl shrink-0 transition">
+                    <span>🔒</span>
+                    <span>Lock</span>
+                </button>
+
+                <button onclick="openBackupModal()" title="Database Backup & Restore" class="hidden sm:flex items-center gap-1 bg-[#FDE047] hover:bg-amber-300 text-[#831843] font-extrabold text-xs px-3 py-2 rounded-xl shadow-xs shrink-0 transition">
                     <span>🛡️</span>
-                    <span>Backup / DB</span>
+                    <span>Backup</span>
                 </button>
             </div>
         </div>
 
         <!-- Navigation Tabs + Date Bar -->
-        <div class="bg-[#042d1e] border-t border-emerald-900/80">
+        <div class="bg-[#831843] border-t border-pink-300/30">
             <div class="max-w-[1460px] mx-auto px-3 sm:px-5 py-1.5 flex flex-wrap items-center justify-between gap-2">
-                <div class="flex items-center gap-1 bg-black/25 p-1 rounded-xl overflow-x-auto no-scrollbar">
-                    <button id="navTab_pos" onclick="switchMainTab('pos')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold bg-[#FACC15] text-[#06402B] whitespace-nowrap">
+                <div class="flex items-center gap-1 bg-black/20 p-1 rounded-xl overflow-x-auto no-scrollbar">
+                    <button id="navTab_pos" onclick="switchMainTab('pos')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold bg-[#FDE047] text-[#831843] whitespace-nowrap">
                         🧾 POS Billing
                     </button>
-                    <button id="navTab_analytics" onclick="switchMainTab('analytics')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-emerald-100 hover:bg-white/10 whitespace-nowrap">
+                    <button id="navTab_analytics" onclick="switchMainTab('analytics')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-pink-100 hover:bg-white/10 whitespace-nowrap">
                         📊 Management Reports
                     </button>
-                    <button id="navTab_history" onclick="switchMainTab('history')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-emerald-100 hover:bg-white/10 whitespace-nowrap">
-                        📅 Bills & Void Log
+                    <button id="navTab_history" onclick="switchMainTab('history')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-pink-100 hover:bg-white/10 whitespace-nowrap">
+                        📅 Bills &amp; Void Log
                     </button>
-                    <button id="navTab_menu" onclick="switchMainTab('menu')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-emerald-100 hover:bg-white/10 whitespace-nowrap">
-                        ⚙️ Menu, Stock & Rates
+                    <button id="navTab_menu" onclick="switchMainTab('menu')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-pink-100 hover:bg-white/10 whitespace-nowrap">
+                        ⚙️ Menu, Stock &amp; Rates
                     </button>
-                    <button id="navTab_audit" onclick="switchMainTab('audit')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-emerald-100 hover:bg-white/10 whitespace-nowrap">
+                    <button id="navTab_audit" onclick="switchMainTab('audit')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-pink-100 hover:bg-white/10 whitespace-nowrap">
                         🕵️ Audit Trail
                     </button>
                 </div>
 
                 <!-- Date Picker -->
                 <div class="flex items-center gap-1.5">
-                    <button onclick="shiftDate(-1)" class="px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-white">&lt;</button>
-                    <label class="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-lg cursor-pointer text-xs font-bold text-amber-200">
+                    <button onclick="shiftDate(-1)" class="px-2 py-1 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-bold text-white">&lt;</button>
+                    <label class="relative flex items-center gap-1.5 bg-white/15 hover:bg-white/25 px-2.5 py-1 rounded-lg cursor-pointer text-xs font-bold text-pink-100">
                         <span>📅</span>
                         <span id="activeDateLabel">Today</span>
                         <input type="date" id="activeDateInput" onchange="setCustomDate(this.value)" class="absolute inset-0 opacity-0 w-full h-full cursor-pointer">
                     </label>
-                    <button onclick="shiftDate(1)" class="px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-white">&gt;</button>
-                    <button onclick="jumpToday()" class="px-2 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-[11px] font-extrabold text-white">Today</button>
+                    <button onclick="shiftDate(1)" class="px-2 py-1 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-bold text-white">&gt;</button>
+                    <button onclick="jumpToday()" class="px-2 py-1 rounded-lg bg-[#DB2777] hover:bg-pink-500 text-[11px] font-extrabold text-white">Today</button>
                 </div>
             </div>
         </div>
     </header>
 
     <!-- =====================================================================
-         VIEW 1: POS BILLING WORKSPACE (NEUMORPHIC MENU + SMART CART)
+         VIEW 1: POS BILLING WORKSPACE (SOFT PINK NEUMORPHIC MENU + CART)
          ===================================================================== -->
     <div id="view_pos" class="max-w-[1460px] mx-auto px-3 sm:px-5 pt-4">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
@@ -233,7 +281,7 @@
                 <!-- Search + Quick Bestsellers + Category Filter Card -->
                 <div class="neu-card rounded-3xl p-4 space-y-3">
                     <div class="relative flex items-center">
-                        <span class="absolute left-4 text-slate-500 text-base pointer-events-none">🔍</span>
+                        <span class="absolute left-4 text-pink-700 text-base pointer-events-none">🔍</span>
                         <input type="text" id="posSearchInput" oninput="handleSearchInput(this.value)"
                             placeholder="Search item (e.g., Lolly, Fried Rice, Triple, Mandi, 180)... [Press /]"
                             class="neu-inset w-full pl-11 pr-24 py-3 rounded-2xl text-sm font-bold text-slate-900 placeholder:font-medium placeholder:text-slate-400 focus:outline-none">
@@ -241,7 +289,7 @@
                             <button id="clearSearchBtn" onclick="clearSearch()" class="hidden neu-btn px-2.5 py-1 rounded-xl text-slate-700 text-xs font-extrabold">
                                 × Clear
                             </button>
-                            <kbd class="hidden sm:inline-block px-2 py-0.5 text-[10px] font-extrabold text-slate-500 bg-white/70 rounded-lg shadow-2xs">
+                            <kbd class="hidden sm:inline-block px-2 py-0.5 text-[10px] font-extrabold text-pink-800 bg-white/80 rounded-lg shadow-2xs">
                                 /
                             </kbd>
                         </div>
@@ -249,7 +297,7 @@
 
                     <!-- Fast Billing Quick-Tap Strip -->
                     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
-                        <span class="text-[10px] font-black uppercase tracking-wider text-[#06402B] shrink-0">⚡ Fast Tap:</span>
+                        <span class="text-[10px] font-black uppercase tracking-wider text-[#9D174D] shrink-0">⚡ Fast Tap:</span>
                         <button onclick="addItemToCart('nvs_1', 'Full')" class="neu-btn px-2.5 py-1 rounded-xl text-[11px] font-extrabold text-slate-800 whitespace-nowrap">🍗 Lolly Fry (F) ₹180</button>
                         <button onclick="addItemToCart('nvs_1', 'Half')" class="neu-btn px-2.5 py-1 rounded-xl text-[11px] font-extrabold text-slate-800 whitespace-nowrap">🍗 Lolly Fry (H) ₹90</button>
                         <button onclick="addItemToCart('rc_5', 'Full')" class="neu-btn px-2.5 py-1 rounded-xl text-[11px] font-extrabold text-slate-800 whitespace-nowrap">🍚 Chi. Fried Rice ₹150</button>
@@ -267,7 +315,7 @@
                 <div class="flex flex-wrap items-center justify-between gap-2 px-1">
                     <p id="menuResultCounter" class="text-xs font-extrabold text-slate-600 uppercase tracking-wider">Showing 68 Menu Items</p>
                     <div class="flex items-center gap-3 text-[11px] font-bold text-slate-500">
-                        <span>Shortcuts: <kbd class="px-1.5 py-0.5 bg-white rounded shadow-2xs">/</kbd> Search • <kbd class="px-1.5 py-0.5 bg-white rounded shadow-2xs">F2</kbd> Checkout</span>
+                        <span>Shortcuts: <kbd class="px-1.5 py-0.5 bg-white rounded shadow-2xs text-pink-800">/</kbd> Search • <kbd class="px-1.5 py-0.5 bg-white rounded shadow-2xs text-pink-800">F2</kbd> Checkout</span>
                     </div>
                 </div>
 
@@ -277,37 +325,37 @@
                 </div>
             </div>
 
-            <!-- RIGHT COLUMN (5/12): STICKY NEUMORPHIC POS CART & BILLING PANEL -->
+            <!-- RIGHT COLUMN (5/12): STICKY SOFT PINK NEUMORPHIC POS CART -->
             <div id="posCartPanel" class="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-[108px]">
                 <div class="neu-card rounded-3xl overflow-hidden flex flex-col">
 
                     <!-- Cart Top Bar: Permanent Bill Sequence & Held Bills -->
-                    <div class="bg-[#06402B] text-white px-4 py-3.5 flex items-center justify-between">
+                    <div class="bg-gradient-to-r from-[#9D174D] to-[#BE185D] text-white px-4 py-3.5 flex items-center justify-between border-b border-pink-300/30">
                         <div>
                             <div class="flex items-center gap-2">
-                                <span class="text-xs font-extrabold uppercase tracking-wider text-[#FACC15]">NEXT BILL</span>
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-[#FDE047]">NEXT BILL</span>
                                 <span id="currentBillNumberBadge" class="px-2.5 py-0.5 rounded-lg bg-white/15 font-mono-receipt text-xs font-black text-white">#CFP-0001</span>
                             </div>
-                            <p id="cartItemSummaryLine" class="text-[11px] text-emerald-200 mt-0.5">0 items in cart</p>
+                            <p id="cartItemSummaryLine" class="text-[11px] text-pink-100 mt-0.5">0 items in cart</p>
                         </div>
 
                         <div class="flex items-center gap-1.5">
-                            <button onclick="holdCurrentBill()" title="Park / Hold Bill" class="px-2.5 py-1.5 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 border border-amber-300/40 text-[#FACC15] text-[11px] font-extrabold transition">
+                            <button onclick="holdCurrentBill()" title="Park / Hold Bill" class="px-2.5 py-1.5 rounded-xl bg-amber-300/20 hover:bg-amber-300/30 border border-amber-200/40 text-[#FDE047] text-[11px] font-extrabold transition">
                                 ⏸ Hold
                             </button>
                             <button onclick="openParkedBillsModal()" id="parkedBillsBtn" class="px-2.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-[11px] font-extrabold transition">
                                 Held (0)
                             </button>
-                            <button onclick="clearCurrentCart()" title="Clear Cart" class="px-2.5 py-1.5 rounded-xl bg-rose-500/25 hover:bg-rose-500/40 text-rose-200 text-[11px] font-extrabold transition">
+                            <button onclick="clearCurrentCart()" title="Clear Cart" class="px-2.5 py-1.5 rounded-xl bg-rose-950/40 hover:bg-rose-950/60 text-pink-100 text-[11px] font-extrabold transition">
                                 🗑
                             </button>
                         </div>
                     </div>
 
                     <!-- Order Type & Customer Lookup -->
-                    <div class="p-3.5 border-b border-slate-300/60 space-y-2.5">
+                    <div class="p-3.5 border-b border-pink-200/60 space-y-2.5">
                         <div class="grid grid-cols-3 gap-2">
-                            <button id="orderType_Dine-In" onclick="setOrderType('Dine-In')" class="neu-btn-green py-2 rounded-xl text-xs font-extrabold">
+                            <button id="orderType_Dine-In" onclick="setOrderType('Dine-In')" class="neu-btn-pink py-2 rounded-xl text-xs font-extrabold">
                                 🍽️ Dine-In
                             </button>
                             <button id="orderType_Parcel" onclick="setOrderType('Parcel')" class="neu-btn py-2 rounded-xl text-xs font-extrabold text-slate-700">
@@ -326,19 +374,19 @@
                         </div>
 
                         <!-- Returning Customer Badge -->
-                        <div id="customerHistoryBanner" class="hidden px-3 py-1.5 rounded-xl bg-emerald-100/80 border border-emerald-300 text-[11px] font-bold text-[#06402B] flex items-center justify-between">
+                        <div id="customerHistoryBanner" class="hidden px-3 py-1.5 rounded-xl bg-pink-100 border border-pink-300 text-[11px] font-bold text-[#9D174D] flex items-center justify-between">
                             <span id="customerHistoryText">Returning Customer</span>
                             <button onclick="viewCustomerPastOrders()" class="underline font-black">View Bills</button>
                         </div>
                     </div>
 
-                    <!-- Cart Items List (with Item-Level Discount Support) -->
+                    <!-- Cart Items List -->
                     <div id="posCartItemsList" class="p-3.5 space-y-2.5 max-h-[300px] overflow-y-auto">
                         <!-- Rendered dynamically -->
                     </div>
 
-                    <!-- Bill Discount, Packaging, Payment Mode (Including Split) & Checkout -->
-                    <div class="p-3.5 border-t border-slate-300/60 space-y-3 bg-[#E3E9F2]">
+                    <!-- Bill Discount, Packaging, Payment Mode & Checkout -->
+                    <div class="p-3.5 border-t border-pink-200/60 space-y-3 bg-[#EFE7EC]">
                         <div class="grid grid-cols-2 gap-2.5">
                             <div>
                                 <label class="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Bill Discount (₹)</label>
@@ -358,21 +406,21 @@
                                 <span>Items Gross Subtotal</span>
                                 <span id="cartSubtotalText">₹0</span>
                             </div>
-                            <div id="cartItemDiscountRow" class="hidden flex justify-between text-emerald-700 font-bold">
+                            <div id="cartItemDiscountRow" class="hidden flex justify-between text-pink-700 font-bold">
                                 <span>Item-level Discounts</span>
                                 <span id="cartItemDiscountText">-₹0</span>
                             </div>
-                            <div class="flex justify-between items-center pt-1.5 border-t border-slate-300/70">
+                            <div class="flex justify-between items-center pt-1.5 border-t border-pink-200">
                                 <span class="text-sm font-black text-slate-900 uppercase">Grand Total</span>
-                                <span id="cartGrandTotalText" class="text-2xl font-black text-[#06402B]">₹0</span>
+                                <span id="cartGrandTotalText" class="text-2xl font-black text-[#9D174D]">₹0</span>
                             </div>
                         </div>
 
-                        <!-- Payment Mode Pills (Cash / UPI / Card / Split) -->
+                        <!-- Payment Mode Pills -->
                         <div>
                             <span class="text-[10px] font-extrabold uppercase text-slate-600 block mb-1.5">Payment Mode</span>
                             <div class="grid grid-cols-4 gap-1.5">
-                                <button id="payMode_Cash" onclick="setPaymentMode('Cash')" class="neu-btn-green py-1.5 rounded-xl text-xs font-extrabold">
+                                <button id="payMode_Cash" onclick="setPaymentMode('Cash')" class="neu-btn-pink py-1.5 rounded-xl text-xs font-extrabold">
                                     💵 Cash
                                 </button>
                                 <button id="payMode_UPI" onclick="setPaymentMode('UPI')" class="neu-btn py-1.5 rounded-xl text-xs font-extrabold text-slate-700">
@@ -391,15 +439,15 @@
                                 <div class="grid grid-cols-3 gap-1.5">
                                     <div>
                                         <label class="text-[9px] font-extrabold uppercase text-slate-600 block">Cash (₹)</label>
-                                        <input type="number" id="splitCashInput" value="0" min="0" oninput="updateSplitStatus()" class="w-full px-2 py-1 rounded-lg bg-white text-xs font-black text-slate-900 border border-slate-300">
+                                        <input type="number" id="splitCashInput" value="0" min="0" oninput="updateSplitStatus()" class="w-full px-2 py-1 rounded-lg bg-white text-xs font-black text-slate-900 border border-pink-200">
                                     </div>
                                     <div>
                                         <label class="text-[9px] font-extrabold uppercase text-slate-600 block">UPI (₹)</label>
-                                        <input type="number" id="splitUpiInput" value="0" min="0" oninput="updateSplitStatus()" class="w-full px-2 py-1 rounded-lg bg-white text-xs font-black text-slate-900 border border-slate-300">
+                                        <input type="number" id="splitUpiInput" value="0" min="0" oninput="updateSplitStatus()" class="w-full px-2 py-1 rounded-lg bg-white text-xs font-black text-slate-900 border border-pink-200">
                                     </div>
                                     <div>
                                         <label class="text-[9px] font-extrabold uppercase text-slate-600 block">Card (₹)</label>
-                                        <input type="number" id="splitCardInput" value="0" min="0" oninput="updateSplitStatus()" class="w-full px-2 py-1 rounded-lg bg-white text-xs font-black text-slate-900 border border-slate-300">
+                                        <input type="number" id="splitCardInput" value="0" min="0" oninput="updateSplitStatus()" class="w-full px-2 py-1 rounded-lg bg-white text-xs font-black text-slate-900 border border-pink-200">
                                     </div>
                                 </div>
                                 <div class="flex justify-between items-center text-[11px] font-extrabold">
@@ -409,13 +457,13 @@
                             </div>
                         </div>
 
-                        <!-- Checkout Trigger (Opens Payment Confirmation Modal) -->
+                        <!-- Checkout Trigger -->
                         <div class="grid grid-cols-12 gap-2 pt-1">
-                            <button onclick="openCheckoutConfirmModal(true)" class="neu-btn-green col-span-8 py-3 px-3 rounded-2xl text-[#FACC15] font-black text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                            <button onclick="openCheckoutConfirmModal(true)" class="neu-btn-pink col-span-8 py-3 px-3 rounded-2xl text-[#FDE047] font-black text-xs sm:text-sm flex items-center justify-center gap-1.5">
                                 <span>🖨️</span>
-                                <span>Confirm & Print Bill</span>
+                                <span>Confirm &amp; Print Bill</span>
                             </button>
-                            <button onclick="openCheckoutConfirmModal(false)" class="neu-btn col-span-4 py-3 px-2 rounded-2xl text-[#06402B] font-extrabold text-xs flex items-center justify-center gap-1">
+                            <button onclick="openCheckoutConfirmModal(false)" class="neu-btn col-span-4 py-3 px-2 rounded-2xl text-[#9D174D] font-extrabold text-xs flex items-center justify-center gap-1">
                                 <span>✓</span>
                                 <span>Save Only</span>
                             </button>
@@ -427,16 +475,16 @@
     </div>
 
     <!-- Mobile Sticky Cart Summary Bar -->
-    <div id="mobileCartBar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-[#06402B] text-white px-4 py-2.5 shadow-2xl border-t border-emerald-800 flex items-center justify-between">
+    <div id="mobileCartBar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-[#9D174D] text-white px-4 py-2.5 shadow-2xl border-t border-pink-300/40 flex items-center justify-between">
         <div onclick="scrollToCart()" class="cursor-pointer">
-            <span id="mobileCartCount" class="text-xs font-extrabold text-[#FACC15] block">0 Items in Cart</span>
+            <span id="mobileCartCount" class="text-xs font-extrabold text-[#FDE047] block">0 Items in Cart</span>
             <span id="mobileCartTotal" class="text-lg font-black text-white leading-none">₹0</span>
         </div>
         <div class="flex items-center gap-2">
             <button onclick="scrollToCart()" class="px-3.5 py-2 rounded-xl bg-white/15 text-white text-xs font-extrabold">
                 View Cart ↑
             </button>
-            <button onclick="openCheckoutConfirmModal(true)" class="px-4 py-2 rounded-xl bg-[#FACC15] text-[#06402B] text-xs font-black">
+            <button onclick="openCheckoutConfirmModal(true)" class="px-4 py-2 rounded-xl bg-[#FDE047] text-[#831843] text-xs font-black">
                 🖨️ Checkout
             </button>
         </div>
@@ -451,7 +499,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
             <div class="neu-card rounded-2xl p-4">
                 <span class="text-[10px] font-extrabold uppercase text-slate-500">Net Valid Sales</span>
-                <p id="anaTotalRevenue" class="text-2xl font-black text-[#06402B] mt-1">₹0</p>
+                <p id="anaTotalRevenue" class="text-2xl font-black text-[#9D174D] mt-1">₹0</p>
                 <span id="anaTotalBillsSub" class="text-[11px] font-bold text-slate-500 mt-1 block">0 Valid Bills</span>
             </div>
             <div class="neu-card rounded-2xl p-4">
@@ -465,23 +513,23 @@
                 <span id="anaLollipopPieces" class="text-[11px] font-bold text-orange-800 mt-1 block">0 Pieces Total</span>
             </div>
             <div class="neu-card rounded-2xl p-4">
-                <span class="text-[10px] font-extrabold uppercase text-rose-700">Discounts & Voids</span>
+                <span class="text-[10px] font-extrabold uppercase text-rose-700">Discounts &amp; Voids</span>
                 <p id="anaTotalDiscount" class="text-lg font-black text-rose-700 mt-1">Disc: ₹0</p>
                 <span id="anaVoidedSummary" class="text-[11px] font-bold text-slate-600 mt-1 block">Voided: 0 (₹0)</span>
             </div>
             <div class="neu-card rounded-2xl p-4 col-span-2 sm:col-span-1">
-                <span class="text-[10px] font-extrabold uppercase text-emerald-700">Extra / Avg Bill</span>
-                <p id="anaExtraCharges" class="text-lg font-black text-emerald-800 mt-1">Extra: ₹0</p>
+                <span class="text-[10px] font-extrabold uppercase text-pink-700">Extra / Avg Bill</span>
+                <p id="anaExtraCharges" class="text-lg font-black text-pink-800 mt-1">Extra: ₹0</p>
                 <span id="anaAvgBillSub" class="text-[11px] font-bold text-slate-600 mt-1 block">Avg Bill: ₹0</span>
             </div>
         </div>
 
-        <!-- Payment Reconciliation Breakdown (Cash vs UPI vs Card vs Split) -->
+        <!-- Payment Reconciliation Breakdown -->
         <div class="neu-card rounded-3xl p-4 sm:p-5 space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                     <h2 class="text-sm font-black uppercase tracking-wider text-slate-900">
-                        💳 DAILY PAYMENT RECONCILIATION (CASH, UPI, CARD & SPLIT)
+                        💳 DAILY PAYMENT RECONCILIATION (CASH, UPI, CARD &amp; SPLIT)
                     </h2>
                     <p class="text-xs text-slate-500">Split bills automatically distribute into exact Cash, UPI, and Card drawers</p>
                 </div>
@@ -489,7 +537,7 @@
                     <button onclick="copyDayEndWhatsAppReport()" class="neu-btn-gold px-3.5 py-2 rounded-xl text-xs font-black">
                         📋 Copy WhatsApp Report
                     </button>
-                    <button onclick="exportSalesCSV()" class="neu-btn-green px-3.5 py-2 rounded-xl text-xs font-extrabold">
+                    <button onclick="exportSalesCSV()" class="neu-btn-pink px-3.5 py-2 rounded-xl text-xs font-extrabold">
                         📥 Export CSV
                     </button>
                 </div>
@@ -497,8 +545,8 @@
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div class="neu-inset rounded-2xl p-3.5">
-                    <span class="text-[10px] font-extrabold uppercase text-emerald-800">💵 Cash Drawer</span>
-                    <p id="recCashTotal" class="text-xl font-black text-emerald-900 mt-0.5">₹0</p>
+                    <span class="text-[10px] font-extrabold uppercase text-pink-800">💵 Cash Drawer</span>
+                    <p id="recCashTotal" class="text-xl font-black text-pink-900 mt-0.5">₹0</p>
                     <span id="recCashCount" class="text-[11px] font-semibold text-slate-500">0 transactions</span>
                 </div>
                 <div class="neu-inset rounded-2xl p-3.5">
@@ -521,14 +569,13 @@
 
         <!-- Lollipop Category Chart + Hourly Sales & Staff Performance -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-            <!-- Category Lollipop Chart (7 Cols) -->
             <div class="lg:col-span-7 neu-card rounded-3xl p-4 sm:p-5 space-y-4">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div>
                         <h3 class="text-sm font-black uppercase tracking-wider text-slate-900">
                             🍭 CATEGORY SALES LOLLIPOP CHART
                         </h3>
-                        <p class="text-xs text-slate-500">Stem & bubble comparison for selected date</p>
+                        <p class="text-xs text-slate-500">Stem &amp; bubble comparison for selected date</p>
                     </div>
                     <div class="neu-inset inline-flex rounded-xl p-1">
                         <button id="lollipopMode_qty" onclick="setLollipopChartMode('qty')" class="px-3 py-1 rounded-lg text-xs font-extrabold bg-white text-slate-900 shadow-2xs">
@@ -542,9 +589,7 @@
                 <div id="lollipopChartRows" class="space-y-3.5 pt-1"></div>
             </div>
 
-            <!-- Hourly Sales + Staff Report + Best/Slow Sellers (5 Cols) -->
             <div class="lg:col-span-5 space-y-4">
-                <!-- Staff Billing Performance -->
                 <div class="neu-card rounded-3xl p-4 space-y-2.5">
                     <h3 class="text-sm font-black uppercase tracking-wider text-slate-900">
                         👤 STAFF-WISE BILLING REPORT
@@ -552,7 +597,6 @@
                     <div id="staffReportBox" class="space-y-2"></div>
                 </div>
 
-                <!-- Hourly Peak Sales -->
                 <div class="neu-card rounded-3xl p-4 space-y-2.5">
                     <h3 class="text-sm font-black uppercase tracking-wider text-slate-900">
                         ⏰ HOURLY SALES BREAKDOWN
@@ -560,7 +604,6 @@
                     <div id="hourlySalesBox" class="space-y-2 max-h-48 overflow-y-auto"></div>
                 </div>
 
-                <!-- Best vs Slow Selling Items -->
                 <div class="neu-card rounded-3xl p-4 space-y-2.5">
                     <h3 class="text-sm font-black uppercase tracking-wider text-slate-900">
                         🏆 ITEM PERFORMANCE (BEST vs SLOW)
@@ -579,7 +622,7 @@
                     </h3>
                     <p class="text-xs text-slate-500">Half, Full, Total Qty aur Net Revenue (₹)</p>
                 </div>
-                <span id="soldRegisterCountBadge" class="px-3 py-1 rounded-full bg-emerald-100 text-[#06402B] text-xs font-extrabold">
+                <span id="soldRegisterCountBadge" class="px-3 py-1 rounded-full bg-pink-100 text-[#9D174D] text-xs font-extrabold">
                     0 Items Sold
                 </span>
             </div>
@@ -587,7 +630,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="border-b-2 border-slate-300 text-[11px] font-extrabold uppercase text-slate-500">
+                        <tr class="border-b-2 border-pink-200 text-[11px] font-extrabold uppercase text-slate-500">
                             <th class="py-2.5 px-2">Item Name</th>
                             <th class="py-2.5 px-2">Category</th>
                             <th class="py-2.5 px-2 text-center">Half</th>
@@ -596,7 +639,7 @@
                             <th class="py-2.5 px-2 text-right">Net Sales (₹)</th>
                         </tr>
                     </thead>
-                    <tbody id="soldRegisterTableBody" class="divide-y divide-slate-200/80"></tbody>
+                    <tbody id="soldRegisterTableBody" class="divide-y divide-pink-200/60"></tbody>
                 </table>
             </div>
         </div>
@@ -610,12 +653,12 @@
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
                 <div>
                     <h2 class="text-sm font-black uppercase tracking-wider text-slate-900">
-                        🧾 GENERATED & VOIDED POS BILLS (<span id="historyDateHeading">Today</span>)
+                        🧾 GENERATED &amp; VOIDED POS BILLS (<span id="historyDateHeading">Today</span>)
                     </h2>
-                    <p class="text-xs text-slate-500">Bills kabhi permanently delete nahi hote — Void karne par reason & staff record preserve rehta hai</p>
+                    <p class="text-xs text-slate-500">Bills kabhi permanently delete nahi hote — Void karne par reason &amp; staff record preserve rehta hai</p>
                 </div>
                 <div class="flex gap-2">
-                    <button onclick="exportSalesCSV()" class="neu-btn-green px-3.5 py-2 rounded-xl text-xs font-extrabold">
+                    <button onclick="exportSalesCSV()" class="neu-btn-pink px-3.5 py-2 rounded-xl text-xs font-extrabold">
                         📥 Export CSV Report
                     </button>
                 </div>
@@ -629,7 +672,6 @@
          VIEW 4: MENU, STOCK AVAILABILITY & RATE HISTORY MANAGER
          ===================================================================== -->
     <div id="view_menu" class="hidden max-w-[1300px] mx-auto px-3 sm:px-5 pt-4 space-y-5">
-        <!-- Add New Item -->
         <div class="neu-card rounded-3xl p-4 sm:p-5 space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -638,7 +680,7 @@
                     </h2>
                     <p class="text-xs text-slate-500">Purane bills ke rates lock rehte hain; naya rate sirf naye bills par apply hoga</p>
                 </div>
-                <button onclick="resetMenuToDefaultChaiva()" class="neu-btn px-3 py-1.5 rounded-xl text-amber-900 text-xs font-extrabold">
+                <button onclick="resetMenuToDefaultChaiva()" class="neu-btn px-3 py-1.5 rounded-xl text-pink-900 text-xs font-extrabold">
                     ↺ Restore Original 68 Chaiva Items
                 </button>
             </div>
@@ -670,19 +712,18 @@
                     <input type="number" id="newItemFullPrice" placeholder="e.g., 180" min="1" class="neu-inset w-full px-3 py-2 rounded-xl text-xs font-bold focus:outline-none">
                 </div>
                 <div class="flex items-end">
-                    <button onclick="addNewMenuItem()" class="neu-btn-green w-full py-2 px-3 rounded-xl text-[#FACC15] font-extrabold text-xs">
+                    <button onclick="addNewMenuItem()" class="neu-btn-pink w-full py-2 px-3 rounded-xl text-[#FDE047] font-extrabold text-xs">
                         + Add Dish
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Menu Stock & Rate Table -->
         <div class="neu-card rounded-3xl p-4 sm:p-5 space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                     <h3 class="text-sm font-black uppercase tracking-wider text-slate-900">
-                        STOCK AVAILABILITY & RATE CONTROL (68+ ITEMS)
+                        STOCK AVAILABILITY &amp; RATE CONTROL (68+ ITEMS)
                     </h3>
                     <p class="text-xs text-slate-500">Out-of-stock items POS screen par disable ho jayenge • Har rate change Audit Log mein save hota hai</p>
                 </div>
@@ -691,8 +732,8 @@
 
             <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
                 <table class="w-full text-left border-collapse text-xs">
-                    <thead class="sticky top-0 bg-[#E6EBF2] z-10">
-                        <tr class="border-b border-slate-300 text-[11px] font-extrabold uppercase text-slate-600">
+                    <thead class="sticky top-0 bg-[#F3ECF0] z-10">
+                        <tr class="border-b border-pink-200 text-[11px] font-extrabold uppercase text-slate-600">
                             <th class="py-2.5 px-2">Item Name</th>
                             <th class="py-2.5 px-2">Category</th>
                             <th class="py-2.5 px-2">Availability</th>
@@ -701,7 +742,7 @@
                             <th class="py-2.5 px-2 text-right">Action</th>
                         </tr>
                     </thead>
-                    <tbody id="menuManagerTableBody" class="divide-y divide-slate-200/80"></tbody>
+                    <tbody id="menuManagerTableBody" class="divide-y divide-pink-200/60"></tbody>
                 </table>
             </div>
         </div>
@@ -715,11 +756,11 @@
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                     <h2 class="text-sm font-black uppercase tracking-wider text-slate-900">
-                        🕵️ COMPLETE SYSTEM AUDIT TRAIL & RATE CHANGE LOG
+                        🕵️ COMPLETE SYSTEM AUDIT TRAIL &amp; RATE CHANGE LOG
                     </h2>
                     <p class="text-xs text-slate-500">Kaunse staff ne kab bill banaya, void kiya, discount diya ya item rate badla</p>
                 </div>
-                <span id="auditCountBadge" class="px-3 py-1 rounded-full bg-slate-200 text-slate-800 text-xs font-extrabold">0 Events</span>
+                <span id="auditCountBadge" class="px-3 py-1 rounded-full bg-pink-100 text-[#9D174D] text-xs font-extrabold">0 Events</span>
             </div>
             <div id="auditLogList" class="space-y-2 max-h-[560px] overflow-y-auto"></div>
         </div>
@@ -730,8 +771,8 @@
          ===================================================================== -->
     <div id="checkoutConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-xs p-4">
         <div class="neu-card rounded-3xl max-w-md w-full p-5 space-y-4 animate-pop">
-            <div class="flex items-center justify-between border-b border-slate-300 pb-2.5">
-                <h3 class="text-sm font-black uppercase tracking-wider text-[#06402B]">✓ Confirm Payment & Generate Bill</h3>
+            <div class="flex items-center justify-between border-b border-pink-200 pb-2.5">
+                <h3 class="text-sm font-black uppercase tracking-wider text-[#9D174D]">✓ Confirm Payment &amp; Generate Bill</h3>
                 <button onclick="closeCheckoutConfirmModal()" class="text-slate-500 hover:text-slate-900 font-bold">✕</button>
             </div>
 
@@ -745,16 +786,16 @@
                     <span id="cfmStaffName" class="font-extrabold text-slate-900">Admin</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-slate-600 font-semibold">Order Type & Customer:</span>
+                    <span class="text-slate-600 font-semibold">Order Type &amp; Customer:</span>
                     <span id="cfmOrderCustomer" class="font-extrabold text-slate-900">Dine-In • Walk-In</span>
                 </div>
                 <div class="flex justify-between">
                     <span class="text-slate-600 font-semibold">Payment Breakdown:</span>
-                    <span id="cfmPaymentSummary" class="font-extrabold text-emerald-800">Cash: ₹0</span>
+                    <span id="cfmPaymentSummary" class="font-extrabold text-pink-800">Cash: ₹0</span>
                 </div>
-                <div class="flex justify-between items-center pt-2 border-t border-slate-300">
+                <div class="flex justify-between items-center pt-2 border-t border-pink-200">
                     <span class="text-sm font-black text-slate-900">PAYABLE AMOUNT:</span>
-                    <span id="cfmGrandTotal" class="text-2xl font-black text-[#06402B]">₹0</span>
+                    <span id="cfmGrandTotal" class="text-2xl font-black text-[#9D174D]">₹0</span>
                 </div>
             </div>
 
@@ -762,19 +803,19 @@
                 <button onclick="closeCheckoutConfirmModal()" class="neu-btn py-2.5 rounded-xl text-xs font-extrabold text-slate-700">
                     ← Edit Cart
                 </button>
-                <button id="finalConfirmSubmitBtn" onclick="executeConfirmedBillSave()" class="neu-btn-green py-2.5 rounded-xl text-xs font-black text-[#FACC15]">
-                    Confirm & Save Bill
+                <button id="finalConfirmSubmitBtn" onclick="executeConfirmedBillSave()" class="neu-btn-pink py-2.5 rounded-xl text-xs font-black text-[#FDE047]">
+                    Confirm &amp; Save Bill
                 </button>
             </div>
         </div>
     </div>
 
     <!-- =====================================================================
-         MODAL 2: VOID / CANCEL BILL MODAL (WITH REASON & STAFF AUDIT)
+         MODAL 2: VOID / CANCEL BILL MODAL
          ===================================================================== -->
     <div id="voidBillModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-xs p-4">
         <div class="neu-card rounded-3xl max-w-md w-full p-5 space-y-4 animate-pop">
-            <div class="flex items-center justify-between border-b border-slate-300 pb-2">
+            <div class="flex items-center justify-between border-b border-pink-200 pb-2">
                 <h3 class="text-sm font-black uppercase text-rose-700">🚫 Void / Cancel POS Bill</h3>
                 <button onclick="closeVoidBillModal()" class="text-slate-500 hover:text-slate-900 font-bold">✕</button>
             </div>
@@ -804,18 +845,18 @@
          ===================================================================== -->
     <div id="receiptModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/65 backdrop-blur-xs p-4">
         <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
-            <div class="bg-[#06402B] text-white px-4 py-3 flex items-center justify-between no-print">
-                <span class="text-xs font-extrabold uppercase tracking-wider text-[#FACC15]">Thermal POS Receipt</span>
+            <div class="bg-[#9D174D] text-white px-4 py-3 flex items-center justify-between no-print">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-[#FDE047]">Thermal POS Receipt</span>
                 <button onclick="closeReceiptModal()" class="text-white/80 hover:text-white text-lg font-bold">✕</button>
             </div>
             <div class="p-4 overflow-y-auto bg-slate-100 flex justify-center">
                 <div id="thermalPrintArea" class="bg-white w-[300px] p-4 shadow-sm border border-slate-200 font-mono-receipt text-[11px] text-black leading-snug"></div>
             </div>
             <div class="p-3 bg-white border-t border-slate-200 grid grid-cols-3 gap-2 no-print">
-                <button onclick="window.print()" class="py-2.5 px-2 rounded-xl bg-[#06402B] hover:bg-[#042d1e] text-[#FACC15] font-black text-xs flex items-center justify-center gap-1">
+                <button onclick="window.print()" class="py-2.5 px-2 rounded-xl bg-[#9D174D] hover:bg-[#831843] text-[#FDE047] font-black text-xs flex items-center justify-center gap-1">
                     🖨️ Print
                 </button>
-                <button onclick="copyLastBillWhatsApp()" class="py-2.5 px-2 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-[#06402B] font-extrabold text-xs flex items-center justify-center gap-1">
+                <button onclick="copyLastBillWhatsApp()" class="py-2.5 px-2 rounded-xl bg-pink-100 hover:bg-pink-200 text-[#9D174D] font-extrabold text-xs flex items-center justify-center gap-1">
                     📲 Copy Bill
                 </button>
                 <button onclick="closeReceiptModal()" class="py-2.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs">
@@ -826,16 +867,46 @@
     </div>
 
     <!-- =====================================================================
-         MODAL 4: STAFF LOGIN & ROLE SWITCHER
+         MODAL 4: CHANGE POS PASSWORD MODAL
+         ===================================================================== -->
+    <div id="passwordSettingsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+        <div class="neu-card rounded-3xl max-w-sm w-full p-5 space-y-4 animate-pop">
+            <div class="flex items-center justify-between border-b border-pink-200 pb-2">
+                <h3 class="text-sm font-black uppercase text-[#9D174D]">🔑 Change POS Password</h3>
+                <button onclick="closePasswordSettingsModal()" class="text-slate-500 hover:text-slate-900 font-bold">✕</button>
+            </div>
+            <div class="space-y-2.5 text-xs">
+                <div>
+                    <label class="font-extrabold text-slate-700 block mb-1">Current Password *</label>
+                    <input type="password" id="oldPwdInput" placeholder="Current password..." class="neu-inset w-full px-3 py-2 rounded-xl font-bold">
+                </div>
+                <div>
+                    <label class="font-extrabold text-slate-700 block mb-1">New Password (Min 4 chars) *</label>
+                    <input type="password" id="newPwdInput" placeholder="New password..." class="neu-inset w-full px-3 py-2 rounded-xl font-bold">
+                </div>
+                <div>
+                    <label class="font-extrabold text-slate-700 block mb-1">Confirm New Password *</label>
+                    <input type="password" id="confirmNewPwdInput" placeholder="Re-enter new password..." class="neu-inset w-full px-3 py-2 rounded-xl font-bold">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="closePasswordSettingsModal()" class="neu-btn py-2.5 rounded-xl text-xs font-extrabold text-slate-700">Cancel</button>
+                <button onclick="saveNewPosPassword()" class="neu-btn-pink py-2.5 rounded-xl text-xs font-black text-[#FDE047]">Update Password</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL 5: STAFF LOGIN & ROLE SWITCHER
          ===================================================================== -->
     <div id="staffModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-xs p-4">
         <div class="neu-card rounded-3xl max-w-sm w-full p-5 space-y-4 animate-pop">
-            <div class="flex items-center justify-between border-b border-slate-300 pb-2">
+            <div class="flex items-center justify-between border-b border-pink-200 pb-2">
                 <h3 class="text-sm font-black uppercase text-slate-900">👤 Switch Active Staff</h3>
                 <button onclick="closeStaffModal()" class="text-slate-500 hover:text-slate-900 font-bold">✕</button>
             </div>
             <div id="staffListContainer" class="space-y-2"></div>
-            <div class="pt-2 border-t border-slate-300 space-y-2">
+            <div class="pt-2 border-t border-pink-200 space-y-2">
                 <p class="text-[11px] font-extrabold text-slate-600">+ Add New Staff Member</p>
                 <div class="flex gap-2">
                     <input type="text" id="newStaffNameInput" placeholder="Staff Name (e.g., Bilal)" class="neu-inset flex-1 px-3 py-1.5 rounded-xl text-xs font-bold">
@@ -843,19 +914,19 @@
                         <option value="Cashier">Cashier</option>
                         <option value="Manager">Manager</option>
                     </select>
-                    <button onclick="addNewStaffMember()" class="neu-btn-green px-3 py-1.5 rounded-xl text-xs font-bold text-[#FACC15]">Add</button>
+                    <button onclick="addNewStaffMember()" class="neu-btn-pink px-3 py-1.5 rounded-xl text-xs font-bold text-[#FDE047]">Add</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- =====================================================================
-         MODAL 5: DATABASE BACKUP, RESTORE & STANDALONE EXPORT
+         MODAL 6: DATABASE BACKUP & RESTORE
          ===================================================================== -->
     <div id="backupModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-xs p-4">
         <div class="neu-card rounded-3xl max-w-md w-full p-5 space-y-4 animate-pop">
-            <div class="flex items-center justify-between border-b border-slate-300 pb-2">
-                <h3 class="text-sm font-black uppercase text-[#06402B]">🛡️ Data Safety, Backup & Restore</h3>
+            <div class="flex items-center justify-between border-b border-pink-200 pb-2">
+                <h3 class="text-sm font-black uppercase text-[#9D174D]">🛡️ Data Safety, Backup &amp; Restore</h3>
                 <button onclick="closeBackupModal()" class="text-slate-500 hover:text-slate-900 font-bold">✕</button>
             </div>
             <p class="text-xs text-slate-600">
@@ -867,7 +938,7 @@
                 <div class="flex justify-between"><span>Last Auto-Snapshot:</span><strong id="bkLastSnapshot">Just now</strong></div>
             </div>
             <div class="grid grid-cols-2 gap-2.5">
-                <button onclick="exportFullDatabaseJSON()" class="neu-btn-green py-2.5 px-3 rounded-xl text-xs font-black text-[#FACC15]">
+                <button onclick="exportFullDatabaseJSON()" class="neu-btn-pink py-2.5 px-3 rounded-xl text-xs font-black text-[#FDE047]">
                     📥 Download Backup (.JSON)
                 </button>
                 <label class="neu-btn py-2.5 px-3 rounded-xl text-xs font-extrabold text-slate-800 text-center cursor-pointer">
@@ -879,11 +950,11 @@
     </div>
 
     <!-- =====================================================================
-         MODAL 6: HELD / PARKED BILLS
+         MODAL 7: HELD / PARKED BILLS
          ===================================================================== -->
     <div id="parkedBillsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-xs p-4">
         <div class="neu-card rounded-3xl max-w-md w-full p-5 space-y-3">
-            <div class="flex items-center justify-between border-b border-slate-300 pb-2">
+            <div class="flex items-center justify-between border-b border-pink-200 pb-2">
                 <h3 class="text-sm font-black uppercase text-slate-900">⏸ Parked / Held Bills</h3>
                 <button onclick="closeParkedBillsModal()" class="text-slate-500 hover:text-slate-900 font-bold">✕</button>
             </div>
@@ -892,7 +963,7 @@
     </div>
 
     <!-- Toast Banner -->
-    <div id="toastBanner" class="no-print fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-[#FACC15] border border-slate-700 text-xs font-extrabold px-4 py-2 rounded-full shadow-xl opacity-0 pointer-events-none transition-opacity duration-200">
+    <div id="toastBanner" class="no-print fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-[#831843] text-[#FDE047] border border-pink-300 text-xs font-extrabold px-4 py-2 rounded-full shadow-xl opacity-0 pointer-events-none transition-opacity duration-200">
         Saved!
     </div>
 
@@ -907,8 +978,12 @@
             SEQ: 'chaiva_pos_bill_seq_v2',
             AUDIT: 'chaiva_pos_audit_v2',
             STAFF: 'chaiva_pos_staff_v2',
-            ACTIVE_STAFF: 'chaiva_pos_active_staff_v2'
+            ACTIVE_STAFF: 'chaiva_pos_active_staff_v2',
+            PASSWORD: 'chaiva_pos_lock_pwd_v1'
         };
+
+        const DEFAULT_POS_PASSWORD = 'chaiva123';
+        let isPosUnlocked = false;
 
         const INITIAL_CHAIVA_MENU = [
             // --- VEG STARTER (10 Items) ---
@@ -996,18 +1071,94 @@
         ];
 
         const CATEGORY_COLORS = {
-            'Veg Starter': { badge: 'bg-emerald-100 text-emerald-900', hex: '#15803D' },
-            'Non-Veg Starter': { badge: 'bg-orange-100 text-orange-900', hex: '#EA580C' },
+            'Veg Starter': { badge: 'bg-pink-100 text-pink-900', hex: '#DB2777' },
+            'Non-Veg Starter': { badge: 'bg-rose-100 text-rose-900', hex: '#E11D48' },
             'Soup Special': { badge: 'bg-amber-100 text-amber-900', hex: '#D97706' },
-            'Rice Special': { badge: 'bg-green-100 text-green-900', hex: '#06402B' },
+            'Rice Special': { badge: 'bg-fuchsia-100 text-fuchsia-900', hex: '#A21CAF' },
             'Noodles Special': { badge: 'bg-blue-100 text-blue-900', hex: '#1D4ED8' },
             'Egg Special': { badge: 'bg-yellow-100 text-yellow-900', hex: '#CA8A04' },
             'Kabsa Rice': { badge: 'bg-purple-100 text-purple-900', hex: '#7E22CE' },
-            'Mandi': { badge: 'bg-rose-100 text-rose-900', hex: '#BE123C' }
+            'Mandi': { badge: 'bg-red-100 text-red-900', hex: '#BE123C' }
         };
 
         // =========================================================================
-        // 2. DUAL-PERSISTENCE ENGINE (INDEXEDDB + LOCALSTORAGE VERIFICATION)
+        // 2. PASSWORD PROTECTION & LOCK SCREEN ENGINE
+        // =========================================================================
+        function getStoredPosPassword() {
+            return localStorage.getItem(STORAGE_KEYS.PASSWORD) || DEFAULT_POS_PASSWORD;
+        }
+
+        function handleUnlockSubmit(event) {
+            event.preventDefault();
+            const inp = document.getElementById('unlockPasswordInput');
+            const errEl = document.getElementById('unlockErrorMsg');
+            const entered = inp.value;
+
+            if (entered === getStoredPosPassword()) {
+                isPosUnlocked = true;
+                inp.value = '';
+                errEl.classList.add('hidden');
+                document.getElementById('posLockScreen').classList.add('hidden');
+                logAuditEvent('POS_UNLOCKED', `POS unlocked by ${activeStaff.name}`);
+                showToast('🔓 CHAIVA POS Unlocked!');
+            } else {
+                errEl.classList.remove('hidden');
+                inp.value = '';
+                inp.focus();
+            }
+        }
+
+        function lockPosScreen() {
+            isPosUnlocked = false;
+            document.getElementById('posLockScreen').classList.remove('hidden');
+            document.getElementById('unlockErrorMsg').classList.add('hidden');
+            const inp = document.getElementById('unlockPasswordInput');
+            inp.value = '';
+            setTimeout(() => inp.focus(), 50);
+            logAuditEvent('POS_LOCKED', `POS manually locked by ${activeStaff.name}`);
+        }
+
+        function openPasswordSettingsModal() {
+            document.getElementById('oldPwdInput').value = '';
+            document.getElementById('newPwdInput').value = '';
+            document.getElementById('confirmNewPwdInput').value = '';
+            const modal = document.getElementById('passwordSettingsModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closePasswordSettingsModal() {
+            const modal = document.getElementById('passwordSettingsModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveNewPosPassword() {
+            const oldP = document.getElementById('oldPwdInput').value;
+            const newP = document.getElementById('newPwdInput').value.trim();
+            const cfmP = document.getElementById('confirmNewPwdInput').value.trim();
+
+            if (oldP !== getStoredPosPassword()) {
+                showToast('❌ Purana password galat hai!');
+                return;
+            }
+            if (newP.length < 4) {
+                showToast('Naya password kam se kam 4 characters ka rakhein!');
+                return;
+            }
+            if (newP !== cfmP) {
+                showToast('❌ Naya password match nahi kar raha!');
+                return;
+            }
+
+            localStorage.setItem(STORAGE_KEYS.PASSWORD, newP);
+            logAuditEvent('PASSWORD_CHANGED', `POS login password updated by ${activeStaff.name}`);
+            closePasswordSettingsModal();
+            showToast('✅ POS Password updated!');
+        }
+
+        // =========================================================================
+        // 3. DUAL-PERSISTENCE ENGINE (INDEXEDDB + LOCALSTORAGE VERIFICATION)
         // =========================================================================
         let idbInstance = null;
         function initIndexedDB() {
@@ -1032,7 +1183,6 @@
             const serialized = JSON.stringify(value);
             try {
                 localStorage.setItem(key, serialized);
-                // Verify save integrity
                 const verify = localStorage.getItem(key);
                 if (verify !== serialized) throw new Error('Verification mismatch');
                 updateSyncBadge(true);
@@ -1054,13 +1204,10 @@
             const el = document.getElementById('dbSyncBadge');
             if (!el) return;
             el.textContent = ok ? '● DB Verified' : '⚠️ Backup Needed';
-            el.className = ok
-                ? 'hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-[10px] font-bold text-emerald-200'
-                : 'hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/30 border border-rose-400 text-[10px] font-bold text-rose-100';
         }
 
         // =========================================================================
-        // 3. GLOBAL APPLICATION STATE
+        // 4. GLOBAL APPLICATION STATE
         // =========================================================================
         let menuItems = [];
         let billsByDate = {};
@@ -1086,11 +1233,11 @@
         let cart = {
             orderType: 'Dine-In',
             paymentMode: 'Cash',
-            items: [] // { key, itemId, name, category, portion, rate, qty, itemDiscount, piecesPerUnit }
+            items: []
         };
 
         // =========================================================================
-        // 4. INITIALIZATION & AUDIT LOGGER
+        // 5. INITIALIZATION & AUDIT LOGGER
         // =========================================================================
         function logAuditEvent(actionType, details) {
             auditLogs.unshift({
@@ -1122,7 +1269,6 @@
                 if (seq) {
                     permanentBillCounter = Math.max(1, Number(seq));
                 } else {
-                    // Calculate max existing bill number across all dates so sequence never resets
                     let maxFound = 0;
                     Object.values(billsByDate).flat().forEach(bill => {
                         const match = String(bill.billNo || '').match(/(\d+)/);
@@ -1186,7 +1332,7 @@
         }
 
         // =========================================================================
-        // 5. MENU SEARCH, CATEGORY FILTERS & NEUMORPHIC CARDS
+        // 6. MENU SEARCH, CATEGORY FILTERS & SOFT PINK NEUMORPHIC CARDS
         // =========================================================================
         function handleSearchInput(val) {
             searchQuery = val.trim().toLowerCase();
@@ -1228,7 +1374,7 @@
                 return `
                 <button onclick="selectCategoryFilter('${c.key}')"
                     class="px-3.5 py-1.5 rounded-full text-xs font-extrabold whitespace-nowrap transition ${
-                        isActive ? 'neu-btn-green text-[#FACC15]' : 'neu-btn text-slate-700'
+                        isActive ? 'neu-btn-pink text-[#FDE047]' : 'neu-btn text-slate-700'
                     }">
                     ${c.label}
                 </button>`;
@@ -1258,7 +1404,7 @@
                 grid.innerHTML = `
                 <div class="col-span-full neu-card rounded-3xl p-8 text-center">
                     <p class="text-sm font-extrabold text-slate-700">Koi item match nahi hua "${searchQuery}"</p>
-                    <button onclick="clearSearch()" class="mt-3 neu-btn-green px-4 py-2 rounded-xl text-xs font-bold">
+                    <button onclick="clearSearch()" class="mt-3 neu-btn-pink px-4 py-2 rounded-xl text-xs font-bold">
                         Show All Menu Items
                     </button>
                 </div>`;
@@ -1276,7 +1422,7 @@
                     .reduce((sum, ci) => sum + ci.qty, 0);
 
                 return `
-                <div class="neu-card-sm rounded-2xl p-3.5 flex flex-col justify-between gap-2.5 transition ${!isAvailable ? 'opacity-60' : ''} ${inCartQty > 0 ? 'ring-2 ring-[#06402B]' : ''}">
+                <div class="neu-card-sm rounded-2xl p-3.5 flex flex-col justify-between gap-2.5 transition ${!isAvailable ? 'opacity-60' : ''} ${inCartQty > 0 ? 'ring-2 ring-[#DB2777]' : ''}">
                     <div>
                         <div class="flex items-center justify-between gap-1 mb-1.5">
                             <span class="px-2 py-0.5 rounded-lg text-[10px] font-extrabold ${catStyle.badge}">
@@ -1284,7 +1430,7 @@
                             </span>
                             ${!isAvailable
                                 ? `<span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-[9px] font-black uppercase">Out of Stock</span>`
-                                : (inCartQty > 0 ? `<span class="px-2 py-0.5 rounded-full bg-[#06402B] text-[#FACC15] text-[10px] font-black">${inCartQty} in cart</span>` : '')
+                                : (inCartQty > 0 ? `<span class="px-2 py-0.5 rounded-full bg-[#9D174D] text-[#FDE047] text-[10px] font-black">${inCartQty} in cart</span>` : '')
                             }
                         </div>
                         <h3 class="text-[13px] sm:text-sm font-extrabold text-slate-900 leading-snug">
@@ -1299,20 +1445,20 @@
                     ` : (hasHalf ? `
                     <div class="grid grid-cols-2 gap-2 pt-1">
                         <button onclick="addItemToCart('${item.id}', 'Half')"
-                            class="neu-btn py-2 px-2 rounded-xl text-[#06402B] font-extrabold text-xs flex flex-col items-center leading-tight">
-                            <span class="text-[10px] uppercase text-emerald-700">${isLollipop ? 'Half (3 Pc)' : 'Half'}</span>
+                            class="neu-btn py-2 px-2 rounded-xl text-[#9D174D] font-extrabold text-xs flex flex-col items-center leading-tight">
+                            <span class="text-[10px] uppercase text-pink-700">${isLollipop ? 'Half (3 Pc)' : 'Half'}</span>
                             <span class="text-sm font-black">₹${item.halfPrice}</span>
                         </button>
                         <button onclick="addItemToCart('${item.id}', 'Full')"
-                            class="neu-btn-green py-2 px-2 rounded-xl text-white font-extrabold text-xs flex flex-col items-center leading-tight">
-                            <span class="text-[10px] uppercase text-[#FACC15]">${isLollipop ? 'Full (6 Pc)' : 'Full'}</span>
+                            class="neu-btn-pink py-2 px-2 rounded-xl text-white font-extrabold text-xs flex flex-col items-center leading-tight">
+                            <span class="text-[10px] uppercase text-[#FDE047]">${isLollipop ? 'Full (6 Pc)' : 'Full'}</span>
                             <span class="text-sm font-black">₹${item.fullPrice}</span>
                         </button>
                     </div>
                     ` : `
                     <button onclick="addItemToCart('${item.id}', 'Full')"
-                        class="neu-btn-green w-full py-2.5 px-3 rounded-xl text-white font-extrabold text-xs flex items-center justify-between">
-                        <span class="text-[#FACC15]">+ Add to Bill</span>
+                        class="neu-btn-pink w-full py-2.5 px-3 rounded-xl text-white font-extrabold text-xs flex items-center justify-between">
+                        <span class="text-[#FDE047]">+ Add to Bill</span>
                         <span class="text-sm font-black">₹${item.fullPrice}</span>
                     </button>
                     `)}
@@ -1321,7 +1467,7 @@
         }
 
         // =========================================================================
-        // 6. POS CART, ITEM-LEVEL DISCOUNT, SPLIT PAYMENT & CUSTOMER HISTORY
+        // 7. POS CART, ITEM-LEVEL DISCOUNT, SPLIT PAYMENT & CUSTOMER HISTORY
         // =========================================================================
         function addItemToCart(itemId, portion) {
             const item = menuItems.find(m => m.id === itemId);
@@ -1410,7 +1556,7 @@
             ['Dine-In', 'Parcel', 'Delivery'].forEach(t => {
                 const btn = document.getElementById(`orderType_${t}`);
                 btn.className = t === type
-                    ? 'neu-btn-green py-2 rounded-xl text-xs font-extrabold'
+                    ? 'neu-btn-pink py-2 rounded-xl text-xs font-extrabold'
                     : 'neu-btn py-2 rounded-xl text-xs font-extrabold text-slate-700';
             });
         }
@@ -1420,7 +1566,7 @@
             ['Cash', 'UPI', 'Card', 'Split'].forEach(m => {
                 const btn = document.getElementById(`payMode_${m}`);
                 btn.className = m === mode
-                    ? 'neu-btn-green py-1.5 rounded-xl text-xs font-extrabold'
+                    ? 'neu-btn-pink py-1.5 rounded-xl text-xs font-extrabold'
                     : 'neu-btn py-1.5 rounded-xl text-xs font-extrabold text-slate-700';
             });
 
@@ -1512,7 +1658,7 @@
                             <div class="flex items-center gap-1.5 shrink-0">
                                 <button onclick="updateCartQty('${item.key}', -1)" class="neu-btn w-7 h-7 rounded-lg text-slate-800 font-black text-sm">−</button>
                                 <span class="w-5 text-center text-xs font-black text-slate-900">${item.qty}</span>
-                                <button onclick="updateCartQty('${item.key}', 1)" class="neu-btn w-7 h-7 rounded-lg text-[#06402B] font-black text-sm">+</button>
+                                <button onclick="updateCartQty('${item.key}', 1)" class="neu-btn w-7 h-7 rounded-lg text-[#9D174D] font-black text-sm">+</button>
                                 <button onclick="removeCartItem('${item.key}')" class="ml-1 text-rose-500 hover:text-rose-700 text-xs font-bold px-1">✕</button>
                             </div>
                         </div>
@@ -1606,7 +1752,7 @@
                             <p class="text-[11px] font-semibold text-slate-600">${hb.items.length} items • ₹${total}</p>
                         </div>
                         <div class="flex gap-1.5">
-                            <button onclick="resumeParkedBill(${idx})" class="neu-btn-green px-3 py-1.5 rounded-xl text-[#FACC15] text-xs font-extrabold">Resume</button>
+                            <button onclick="resumeParkedBill(${idx})" class="neu-btn-pink px-3 py-1.5 rounded-xl text-[#FDE047] text-xs font-extrabold">Resume</button>
                             <button onclick="deleteParkedBill(${idx})" class="neu-btn px-2 py-1.5 rounded-xl text-rose-700 text-xs font-bold">✕</button>
                         </div>
                     </div>`;
@@ -1646,7 +1792,7 @@
         }
 
         // =========================================================================
-        // 7. CHECKOUT CONFIRMATION & DUPLICATE SUBMISSION GUARD
+        // 8. CHECKOUT CONFIRMATION & DUPLICATE SUBMISSION GUARD
         // =========================================================================
         function openCheckoutConfirmModal(openPrint) {
             if (cart.items.length === 0) {
@@ -1694,7 +1840,6 @@
         }
 
         function executeConfirmedBillSave() {
-            // Duplicate submission protection
             if (isSubmittingBill || cart.items.length === 0) return;
             isSubmittingBill = true;
             const submitBtn = document.getElementById('finalConfirmSubmitBtn');
@@ -1717,7 +1862,7 @@
                 const billRecord = {
                     id: Date.now(),
                     billNo,
-                    status: 'VALID', // 'VALID' | 'VOID'
+                    status: 'VALID',
                     dateKey: selectedDateKey,
                     hourOfDay: now.getHours(),
                     timeStr: now.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }),
@@ -1727,7 +1872,6 @@
                     paymentSplit,
                     customer: document.getElementById('cartTableOrCustomer').value.trim() || 'Walk-In',
                     phone: document.getElementById('cartCustomerPhone').value.trim(),
-                    // Preserves exact item rate snapshot at time of billing
                     items: JSON.parse(JSON.stringify(cart.items)),
                     subtotal: grossSubtotal,
                     itemDiscountsTotal,
@@ -1741,7 +1885,6 @@
                 dayBills.unshift(billRecord);
                 persistKey(STORAGE_KEYS.BILLS, billsByDate);
 
-                // Increment permanent unique sequence (never reused even if voided)
                 permanentBillCounter += 1;
                 persistKey(STORAGE_KEYS.SEQ, permanentBillCounter);
 
@@ -1766,7 +1909,7 @@
         }
 
         // =========================================================================
-        // 8. VOID / CANCEL BILL WORKFLOW (NO HARD DELETE)
+        // 9. VOID / CANCEL BILL WORKFLOW
         // =========================================================================
         function openVoidBillModal(billId, billNo) {
             voidTargetBillId = billId;
@@ -1811,7 +1954,7 @@
         }
 
         // =========================================================================
-        // 9. THERMAL RECEIPT RENDERING & WHATSAPP COPY
+        // 10. THERMAL RECEIPT RENDERING & WHATSAPP COPY
         // =========================================================================
         function showReceiptModal(bill) {
             lastPrintedBill = bill;
@@ -1933,7 +2076,7 @@
         }
 
         // =========================================================================
-        // 10. MANAGEMENT ANALYTICS ENGINE (RECONCILIATION, MONTHLY, STAFF, HOURLY)
+        // 11. MANAGEMENT ANALYTICS ENGINE
         // =========================================================================
         function computeAnalytics(dateKey) {
             const allDayBills = getBillsForDate(dateKey);
@@ -1967,7 +2110,6 @@
                 totalDiscounts += (Number(bill.discount) || 0) + (Number(bill.itemDiscountsTotal) || 0);
                 totalExtraCharges += Number(bill.extra) || 0;
 
-                // Payment Reconciliation (handles Split accurately)
                 if (bill.paymentMode === 'Split' && bill.paymentSplit) {
                     splitBillsTotal += gTotal;
                     splitTx += 1;
@@ -1988,20 +2130,17 @@
                     cardTx++;
                 }
 
-                // Staff Performance
                 const sName = bill.staffName || 'Admin';
                 if (!staffMap[sName]) staffMap[sName] = { name: sName, count: 0, revenue: 0 };
                 staffMap[sName].count += 1;
                 staffMap[sName].revenue += gTotal;
 
-                // Hourly Breakdown
                 const hr = typeof bill.hourOfDay === 'number' ? bill.hourOfDay : 12;
                 const hrLabel = `${hr % 12 === 0 ? 12 : hr % 12} ${hr < 12 ? 'AM' : 'PM'}`;
                 if (!hourlyMap[hr]) hourlyMap[hr] = { hour: hr, label: hrLabel, count: 0, revenue: 0 };
                 hourlyMap[hr].count += 1;
                 hourlyMap[hr].revenue += gTotal;
 
-                // Items Aggregation
                 (bill.items || []).forEach(it => {
                     const qty = Number(it.qty) || 0;
                     const netItemRev = ((Number(it.rate) || 0) * qty) - (Number(it.itemDiscount) || 0);
@@ -2035,7 +2174,6 @@
                 });
             });
 
-            // Monthly Total Calculation (YYYY-MM prefix match)
             const monthPrefix = dateKey.slice(0, 7);
             let monthlyRevenue = 0;
             let monthlyBillsCount = 0;
@@ -2079,7 +2217,7 @@
             ['qty', 'rev'].forEach(m => {
                 const btn = document.getElementById(`lollipopMode_${m}`);
                 btn.className = m === mode
-                    ? 'px-3 py-1 rounded-lg text-xs font-extrabold bg-white text-slate-900 shadow-2xs'
+                    ? 'px-3 py-1 rounded-lg text-xs font-extrabold bg-white text-[#9D174D] shadow-2xs'
                     : 'px-3 py-1 rounded-lg text-xs font-extrabold text-slate-600';
             });
             renderAnalyticsView();
@@ -2099,7 +2237,6 @@
             document.getElementById('anaExtraCharges').textContent = `Extra: ₹${st.totalExtraCharges}`;
             document.getElementById('anaAvgBillSub').textContent = `Avg Bill: ₹${st.avgBill}`;
 
-            // Reconciliation Boxes
             document.getElementById('recCashTotal').textContent = `₹${st.cashDrawer.toLocaleString('en-IN')}`;
             document.getElementById('recCashCount').textContent = `${st.cashTx} entries`;
             document.getElementById('recUpiTotal').textContent = `₹${st.upiDrawer.toLocaleString('en-IN')}`;
@@ -2109,7 +2246,6 @@
             document.getElementById('recSplitTotal').textContent = `₹${st.splitBillsTotal.toLocaleString('en-IN')}`;
             document.getElementById('recSplitCount').textContent = `${st.splitTx} split bills`;
 
-            // Lollipop Chart
             const maxMetric = Math.max(...st.categoryList.map(c => lollipopChartMode === 'rev' ? c.revenue : c.qty), 1);
             document.getElementById('lollipopChartRows').innerHTML = st.categoryList.map(catObj => {
                 const style = CATEGORY_COLORS[catObj.category] || CATEGORY_COLORS['Veg Starter'];
@@ -2136,17 +2272,15 @@
                 </div>`;
             }).join('');
 
-            // Staff Report
             const staffEl = document.getElementById('staffReportBox');
             staffEl.innerHTML = st.staffList.length
                 ? st.staffList.map(s => `
                     <div class="neu-inset px-3 py-2 rounded-xl flex justify-between items-center text-xs">
                         <span class="font-extrabold text-slate-800">${s.name}</span>
-                        <span class="font-black text-[#06402B]">${s.count} bills • ₹${s.revenue}</span>
+                        <span class="font-black text-[#9D174D]">${s.count} bills • ₹${s.revenue}</span>
                     </div>`).join('')
                 : `<p class="text-xs text-slate-400">No billing activity today.</p>`;
 
-            // Hourly Sales
             const hourlyEl = document.getElementById('hourlySalesBox');
             hourlyEl.innerHTML = st.hourlyList.length
                 ? st.hourlyList.map(h => `
@@ -2156,7 +2290,6 @@
                     </div>`).join('')
                 : `<p class="text-xs text-slate-400">No hourly data yet.</p>`;
 
-            // Best vs Slow Selling Items
             const perfEl = document.getElementById('itemPerformanceBox');
             const top3 = st.soldItemsList.slice(0, 3);
             const soldNames = new Set(st.soldItemsList.map(i => i.name));
@@ -2164,7 +2297,7 @@
 
             perfEl.innerHTML = `
                 <div class="neu-inset p-2.5 rounded-2xl space-y-1">
-                    <span class="text-[10px] font-black uppercase text-emerald-800 block">🔥 Best Sellers</span>
+                    <span class="text-[10px] font-black uppercase text-pink-800 block">🔥 Best Sellers</span>
                     ${top3.length ? top3.map(i => `<div class="truncate font-bold text-slate-800">• ${i.name} (${i.totalQty})</div>`).join('') : '<span class="text-slate-400">—</span>'}
                 </div>
                 <div class="neu-inset p-2.5 rounded-2xl space-y-1">
@@ -2173,7 +2306,6 @@
                 </div>
             `;
 
-            // Item-Wise Sold Register
             document.getElementById('soldRegisterCountBadge').textContent = `${st.soldItemsList.length} Unique Dishes`;
             const tbody = document.getElementById('soldRegisterTableBody');
             tbody.innerHTML = st.soldItemsList.length === 0
@@ -2185,12 +2317,12 @@
                     <td class="py-2.5 px-2 text-center font-bold text-slate-700">${row.halfQty}</td>
                     <td class="py-2.5 px-2 text-center font-bold text-slate-700">${row.fullQty}</td>
                     <td class="py-2.5 px-2 text-center font-black text-slate-900">${row.totalQty}</td>
-                    <td class="py-2.5 px-2 text-right font-black text-[#06402B]">₹${row.revenue.toLocaleString('en-IN')}</td>
+                    <td class="py-2.5 px-2 text-right font-black text-[#9D174D]">₹${row.revenue.toLocaleString('en-IN')}</td>
                 </tr>`).join('');
         }
 
         // =========================================================================
-        // 11. BILLS & VOID LOG VIEW
+        // 12. BILLS & VOID LOG VIEW
         // =========================================================================
         function renderBillsHistoryView() {
             document.getElementById('historyDateHeading').textContent = `${formatHumanDate(selectedDateKey)} (${selectedDateKey})`;
@@ -2209,7 +2341,7 @@
                 <div class="neu-card-sm p-3.5 rounded-2xl flex flex-wrap items-center justify-between gap-3 ${isVoid ? 'opacity-70 border-rose-300 bg-rose-50/40' : ''}">
                     <div class="space-y-0.5 flex-1 min-w-[240px]">
                         <div class="flex flex-wrap items-center gap-2">
-                            <span class="px-2 py-0.5 rounded-lg ${isVoid ? 'bg-rose-700 text-white' : 'bg-[#06402B] text-[#FACC15]'} font-mono-receipt text-xs font-extrabold">${b.billNo}</span>
+                            <span class="px-2 py-0.5 rounded-lg ${isVoid ? 'bg-rose-700 text-white' : 'bg-[#9D174D] text-[#FDE047]'} font-mono-receipt text-xs font-extrabold">${b.billNo}</span>
                             ${isVoid ? `<span class="px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 text-[10px] font-black uppercase">VOIDED</span>` : ''}
                             <span class="text-xs font-extrabold text-slate-900">${b.customer}</span>
                             <span class="text-[11px] font-semibold text-slate-500">• ${b.timeStr} • ${b.orderType} • ${b.paymentMode} • By ${b.staffName || 'Staff'}</span>
@@ -2218,7 +2350,7 @@
                         ${isVoid && b.voidInfo ? `<p class="text-[11px] font-bold text-rose-700">Void Reason: ${b.voidInfo.reason} (by ${b.voidInfo.voidedBy} at ${b.voidInfo.voidedAt})</p>` : ''}
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-base font-black ${isVoid ? 'line-through text-rose-700' : 'text-[#06402B]'} mr-1">₹${b.grandTotal}</span>
+                        <span class="text-base font-black ${isVoid ? 'line-through text-rose-700' : 'text-[#9D174D]'} mr-1">₹${b.grandTotal}</span>
                         <button onclick="reprintBillByIndex(${idx})"
                             class="neu-btn px-3 py-1.5 rounded-xl text-xs font-extrabold text-slate-800">
                             🖨️ Reprint
@@ -2239,7 +2371,7 @@
         }
 
         // =========================================================================
-        // 12. MENU AVAILABILITY, RATE UPDATES & AUDIT LOG VIEW
+        // 13. MENU AVAILABILITY, RATE UPDATES & AUDIT LOG VIEW
         // =========================================================================
         function renderMenuManager() {
             const filterTxt = (document.getElementById('menuManagerSearch')?.value || '').trim().toLowerCase();
@@ -2256,7 +2388,7 @@
                     <td class="py-2.5 px-2">
                         <button onclick="toggleMenuItemAvailability('${item.id}')"
                             class="px-2.5 py-1 rounded-full text-[10px] font-black transition ${
-                                isAvail ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-800'
+                                isAvail ? 'bg-pink-100 text-pink-900' : 'bg-rose-100 text-rose-800'
                             }">
                             ${isAvail ? '● In Stock' : '○ Out of Stock'}
                         </button>
@@ -2378,7 +2510,7 @@
                 const badgeColor =
                     log.actionType === 'BILL_VOIDED' ? 'bg-rose-100 text-rose-800' :
                     log.actionType === 'RATE_CHANGE' ? 'bg-amber-100 text-amber-900' :
-                    'bg-emerald-100 text-emerald-900';
+                    'bg-pink-100 text-pink-900';
                 return `
                 <div class="neu-inset p-3 rounded-2xl flex flex-wrap items-center justify-between gap-2 text-xs">
                     <div class="flex items-center gap-2">
@@ -2393,7 +2525,7 @@
         }
 
         // =========================================================================
-        // 13. STAFF SWITCHER & DATABASE BACKUP / RESTORE
+        // 14. STAFF SWITCHER & DATABASE BACKUP / RESTORE
         // =========================================================================
         function openStaffModal() {
             const container = document.getElementById('staffListContainer');
@@ -2402,7 +2534,7 @@
                 return `
                 <button onclick="selectActiveStaff('${s.id}')"
                     class="w-full p-3 rounded-2xl flex items-center justify-between text-xs font-extrabold transition ${
-                        isCurrent ? 'neu-btn-green text-[#FACC15]' : 'neu-btn text-slate-800'
+                        isCurrent ? 'neu-btn-pink text-[#FDE047]' : 'neu-btn text-slate-800'
                     }">
                     <span>👤 ${s.name}</span>
                     <span class="px-2 py-0.5 rounded-md bg-black/15 text-[10px]">${s.role}</span>
@@ -2510,7 +2642,7 @@
         }
 
         // =========================================================================
-        // 14. WHATSAPP & CSV REPORTS
+        // 15. WHATSAPP & CSV REPORTS
         // =========================================================================
         function copyDayEndWhatsAppReport() {
             const st = computeAnalytics(selectedDateKey);
@@ -2578,7 +2710,7 @@
         }
 
         // =========================================================================
-        // 15. TAB NAVIGATION, GLOBAL REFRESH & KEYBOARD SHORTCUTS
+        // 16. TAB NAVIGATION, GLOBAL REFRESH & KEYBOARD SHORTCUTS
         // =========================================================================
         function switchMainTab(tab) {
             activeMainTab = tab;
@@ -2586,10 +2718,10 @@
                 const btn = document.getElementById(`navTab_${t}`);
                 const view = document.getElementById(`view_${t}`);
                 if (t === tab) {
-                    btn.className = 'px-3 py-1.5 rounded-lg text-xs font-extrabold bg-[#FACC15] text-[#06402B] whitespace-nowrap';
+                    btn.className = 'px-3 py-1.5 rounded-lg text-xs font-extrabold bg-[#FDE047] text-[#831843] whitespace-nowrap';
                     view.classList.remove('hidden');
                 } else {
-                    btn.className = 'px-3 py-1.5 rounded-lg text-xs font-extrabold text-emerald-100 hover:bg-white/10 whitespace-nowrap';
+                    btn.className = 'px-3 py-1.5 rounded-lg text-xs font-extrabold text-pink-100 hover:bg-white/10 whitespace-nowrap';
                     view.classList.add('hidden');
                 }
             });
@@ -2637,8 +2769,10 @@
             }, 2000);
         }
 
-        // Keyboard Shortcuts: '/' for Search, 'F2' for Checkout Confirmation, 'Escape' to close modals
+        // Keyboard Shortcuts (Disabled while Lock Screen is active)
         document.addEventListener('keydown', (e) => {
+            if (!isPosUnlocked) return;
+
             if (e.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
                 e.preventDefault();
                 if (activeMainTab !== 'pos') switchMainTab('pos');
@@ -2654,6 +2788,7 @@
                 closeStaffModal();
                 closeBackupModal();
                 closeParkedBillsModal();
+                closePasswordSettingsModal();
             }
         });
 
@@ -2661,6 +2796,9 @@
             await initIndexedDB();
             loadAppState();
             refreshAllViews();
+            setTimeout(() => {
+                document.getElementById('unlockPasswordInput')?.focus();
+            }, 100);
         });
     </script>
 </body>

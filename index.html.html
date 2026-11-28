@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CHAIVA - Food Point | Soft Pink Neumorphic POS & Analytics</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#BE185D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -230,6 +234,10 @@
                     <span>🛡️</span>
                     <span>Backup</span>
                 </button>
+                <button id="pwaInstallBtn" onclick="triggerPwaInstall()" class="hidden flex items-center gap-1 bg-white text-[#9D174D] hover:bg-pink-50 font-black text-xs px-3 py-2 rounded-xl shadow-md shrink-0 transition">
+                 <span>📲</span>
+                 <span>Install App</span>
+             </button>
             </div>
         </div>
 
@@ -2887,6 +2895,38 @@
                 document.getElementById('unlockPasswordInput')?.focus();
             }, 100);
         });
+        // =========================================================================
+        // PWA SERVICE WORKER & HOME SCREEN INSTALL ENGINE
+        // =========================================================================
+        let deferredInstallPrompt = null;
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch((err) => console.log('SW error:', err));
+            });
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            const installBtn = document.getElementById('pwaInstallBtn');
+            if (installBtn) installBtn.classList.remove('hidden');
+        });
+
+        async function triggerPwaInstall() {
+            if (deferredInstallPrompt) {
+                deferredInstallPrompt.prompt();
+                const { outcome } = await deferredInstallPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('pwaInstallBtn')?.classList.add('hidden');
+                    showToast('✅ CHAIVA POS App Installed!');
+                }
+                deferredInstallPrompt = null;
+            } else {
+                // Fallback guide for iPhone / Safari or already installed
+                alert('Home Screen par add karne ke liye:\n\n• Android / Chrome: Browser menu (⋮) > "Install app" ya "Add to Home screen" dabayein.\n• iPhone (Safari): Share icon (⬆️) > "Add to Home Screen" dabayein.');
+            }
+        }
     </script>
 </body>
 </html>

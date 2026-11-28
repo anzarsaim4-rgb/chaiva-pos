@@ -700,7 +700,9 @@
                         <option value="Noodles Special">Noodles Special</option>
                         <option value="Egg Special">Egg Special</option>
                         <option value="Kabsa Rice">Kabsa Rice</option>
-                        <option value="Mandi">Mandi</option>
+                       <option value="Mandi">Mandi</option>
+                     <option value="Tea">Tea</option>
+                     <option value="Water">Water</option>
                     </select>
                 </div>
                 <div>
@@ -1065,9 +1067,17 @@
             { id: 'kb_2', name: 'Chi. Masala Kabsa (4 People)', category: 'Kabsa Rice', halfPrice: null, fullPrice: 550, pieces: 0, popular: false, available: true },
             { id: 'kb_3', name: 'Chi. Chilly Kabsa (4 People)', category: 'Kabsa Rice', halfPrice: null, fullPrice: 600, pieces: 0, popular: false, available: true },
 
-            // --- MANDI (4 People) (2 Items) ---
+           // --- MANDI (4 People) (2 Items) ---
             { id: 'md_1', name: 'Chicken Mandi (4 People)', category: 'Mandi', halfPrice: null, fullPrice: 650, pieces: 0, popular: true, available: true },
-            { id: 'md_2', name: 'Mutton Mandi (4 People)', category: 'Mandi', halfPrice: null, fullPrice: 1200, pieces: 0, popular: false, available: true }
+            { id: 'md_2', name: 'Mutton Mandi (4 People)', category: 'Mandi', halfPrice: null, fullPrice: 1200, pieces: 0, popular: false, available: true },
+
+            // --- TEA & COFFEE (3 Items) ---
+            { id: 'tea_1', name: 'Kulhad Tea', category: 'Tea', halfPrice: null, fullPrice: 15, pieces: 0, popular: true, available: true },
+            { id: 'tea_2', name: 'Lemon Tea', category: 'Tea', halfPrice: null, fullPrice: 20, pieces: 0, popular: false, available: true },
+            { id: 'tea_3', name: 'Coffee', category: 'Tea', halfPrice: null, fullPrice: 30, pieces: 0, popular: true, available: true },
+
+            // --- WATER (1 Item with Half=500ml & Full=1000ml) ---
+            { id: 'wat_1', name: 'Mineral Water (500ml / 1000ml)', category: 'Water', halfPrice: 10, fullPrice: 20, pieces: 0, popular: true, available: true }
         ];
 
         const CATEGORY_COLORS = {
@@ -1078,7 +1088,9 @@
             'Noodles Special': { badge: 'bg-blue-100 text-blue-900', hex: '#1D4ED8' },
             'Egg Special': { badge: 'bg-yellow-100 text-yellow-900', hex: '#CA8A04' },
             'Kabsa Rice': { badge: 'bg-purple-100 text-purple-900', hex: '#7E22CE' },
-            'Mandi': { badge: 'bg-red-100 text-red-900', hex: '#BE123C' }
+            'Mandi': { badge: 'bg-red-100 text-red-900', hex: '#BE123C' },
+            'Tea': { badge: 'bg-orange-100 text-orange-900', hex: '#C2410C' },
+            'Water': { badge: 'bg-sky-100 text-sky-900', hex: '#0284C7' }
         };
 
         // =========================================================================
@@ -1439,7 +1451,9 @@
                 { key: 'Noodles Special', label: 'Noodles Special' },
                 { key: 'Egg Special', label: 'Egg Special' },
                 { key: 'Kabsa Rice', label: 'Kabsa Rice' },
-                { key: 'Mandi', label: 'Mandi' }
+                { key: 'Mandi', label: 'Mandi' },
+             { key: 'Tea', label: '☕ Tea' },
+             { key: 'Water', label: '💧 Water' }
             ];
 
             document.getElementById('categoryFilterBar').innerHTML = categories.map(c => {

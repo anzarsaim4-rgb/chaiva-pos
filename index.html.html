@@ -1082,40 +1082,87 @@
         };
 
         // =========================================================================
-        // 2. PASSWORD PROTECTION & LOCK SCREEN ENGINE
+        // 2. ENTERPRISE SECURITY SHIELD: SHA-256 HASHING, XSS GUARD & AUTO-LOCK
         // =========================================================================
-        function getStoredPosPassword() {
-            return localStorage.getItem(STORAGE_KEYS.PASSWORD) || DEFAULT_POS_PASSWORD;
+        const SECURITY_SALT = 'CHAIVA_FP_2026_SECURE_SALT_#91';
+        let failedUnlockAttempts = 0;
+        let lockoutUntilTimestamp = 0;
+
+        function escapeHTML(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
-        function handleUnlockSubmit(event) {
+        async function hashPasswordSHA256(plainText) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(SECURITY_SALT + plainText);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hashBuffer))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        async function getActivePasswordHash() {
+            const savedHash = localStorage.getItem(STORAGE_KEYS.PASSWORD);
+            if (savedHash && savedHash.length === 64) return savedHash;
+            const defaultHash = await hashPasswordSHA256(DEFAULT_POS_PASSWORD);
+            localStorage.setItem(STORAGE_KEYS.PASSWORD, defaultHash);
+            return defaultHash;
+        }
+
+        async function handleUnlockSubmit(event) {
             event.preventDefault();
+            const now = Date.now();
             const inp = document.getElementById('unlockPasswordInput');
             const errEl = document.getElementById('unlockErrorMsg');
-            const entered = inp.value;
 
-            if (entered === getStoredPosPassword()) {
+            if (now < lockoutUntilTimestamp) {
+                const secsLeft = Math.ceil((lockoutUntilTimestamp - now) / 1000);
+                errEl.textContent = `⏳ Too many wrong tries! Wait ${secsLeft}s before retrying.`;
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            const enteredHash = await hashPasswordSHA256(inp.value);
+            const storedHash = await getActivePasswordHash();
+
+            if (enteredHash === storedHash) {
+                failedUnlockAttempts = 0;
                 isPosUnlocked = true;
                 inp.value = '';
                 errEl.classList.add('hidden');
                 document.getElementById('posLockScreen').classList.add('hidden');
-                logAuditEvent('POS_UNLOCKED', `POS unlocked by ${activeStaff.name}`);
+                resetIdleTimer();
+                logAuditEvent('POS_UNLOCKED', `POS unlocked securely by ${activeStaff.name}`);
                 showToast('🔓 CHAIVA POS Unlocked!');
             } else {
-                errEl.classList.remove('hidden');
+                failedUnlockAttempts += 1;
                 inp.value = '';
+                if (failedUnlockAttempts >= 5) {
+                    lockoutUntilTimestamp = Date.now() + (5 * 60 * 1000);
+                    errEl.textContent = '🚫 5 Galat Passwords! System 5 minute ke liye lock ho gaya hai.';
+                    logAuditEvent('SECURITY_LOCKOUT', '5 failed unlock attempts triggered 5-min lockout');
+                } else {
+                    errEl.textContent = `❌ Galat Password! (${5 - failedUnlockAttempts} attempts baaki)`;
+                }
+                errEl.classList.remove('hidden');
                 inp.focus();
             }
         }
 
         function lockPosScreen() {
             isPosUnlocked = false;
+            clearTimeout(idleTimeoutTimer);
             document.getElementById('posLockScreen').classList.remove('hidden');
             document.getElementById('unlockErrorMsg').classList.add('hidden');
             const inp = document.getElementById('unlockPasswordInput');
             inp.value = '';
             setTimeout(() => inp.focus(), 50);
-            logAuditEvent('POS_LOCKED', `POS manually locked by ${activeStaff.name}`);
+            logAuditEvent('POS_LOCKED', `POS locked by ${activeStaff.name}`);
         }
 
         function openPasswordSettingsModal() {
@@ -1133,17 +1180,20 @@
             modal.classList.remove('flex');
         }
 
-        function saveNewPosPassword() {
+        async function saveNewPosPassword() {
             const oldP = document.getElementById('oldPwdInput').value;
             const newP = document.getElementById('newPwdInput').value.trim();
             const cfmP = document.getElementById('confirmNewPwdInput').value.trim();
 
-            if (oldP !== getStoredPosPassword()) {
+            const oldHash = await hashPasswordSHA256(oldP);
+            const storedHash = await getActivePasswordHash();
+
+            if (oldHash !== storedHash) {
                 showToast('❌ Purana password galat hai!');
                 return;
             }
-            if (newP.length < 4) {
-                showToast('Naya password kam se kam 4 characters ka rakhein!');
+            if (newP.length < 6) {
+                showToast('Strong password ke liye kam se kam 6 characters rakhein!');
                 return;
             }
             if (newP !== cfmP) {
@@ -1151,11 +1201,34 @@
                 return;
             }
 
-            localStorage.setItem(STORAGE_KEYS.PASSWORD, newP);
-            logAuditEvent('PASSWORD_CHANGED', `POS login password updated by ${activeStaff.name}`);
+            const newHash = await hashPasswordSHA256(newP);
+            localStorage.setItem(STORAGE_KEYS.PASSWORD, newHash);
+            logAuditEvent('PASSWORD_CHANGED', `Encrypted password updated by ${activeStaff.name}`);
             closePasswordSettingsModal();
-            showToast('✅ POS Password updated!');
+            showToast('✅ Encrypted POS Password Updated!');
         }
+
+        // Auto-Lock after 15 minutes of inactivity
+        let idleTimeoutTimer = null;
+        function resetIdleTimer() {
+            clearTimeout(idleTimeoutTimer);
+            if (!isPosUnlocked) return;
+            idleTimeoutTimer = setTimeout(() => {
+                lockPosScreen();
+                showToast('🔒 Auto-locked due to 15 min inactivity');
+            }, 15 * 60 * 1000);
+        }
+        ['click', 'keydown', 'touchstart'].forEach(evt =>
+            document.addEventListener(evt, resetIdleTimer, { passive: true })
+        );
+
+        // Warn before closing tab if unsaved cart items exist
+        window.addEventListener('beforeunload', (e) => {
+            if (cart.items.length > 0) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
 
         // =========================================================================
         // 3. DUAL-PERSISTENCE ENGINE (INDEXEDDB + LOCALSTORAGE VERIFICATION)
